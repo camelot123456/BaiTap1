@@ -1,0 +1,15 @@
+huong dan thao tac github
+git init
+git config user.name "Bao Nguyen"
+git config user.email "nguyensybao1403.com"
+git add .
+git status
+git commit -m "some init msg"
+git log
+git remote add origin https://github.com/camelot123456/qlsv.git
+git push origin master(git push -u origin master)
+
+git fetch origin master
+git merge origin master
+
+git push --force origin master
