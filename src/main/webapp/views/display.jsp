@@ -13,8 +13,16 @@
 	crossorigin="anonymous">
 </head>
 <body>
-
-	<form action="">
+	<div>
+		<c:if test="${empty USERMODEL}">
+			<a href="/login">Đăng nhập</a>
+		</c:if>
+		<c:if test="${not empty USERMODEL}">
+			<a href="#">Xin chào, ${USERMODEL.fullname}</a>
+			<a href="/product-home?action=logout">Đăng xuất</a>
+		</c:if>
+	</div>
+	<form action="" class="container mt-4">
 		<table class="table">
 		  <thead>
 		    <tr>
@@ -39,11 +47,11 @@
 			      <td>${product.price}</td>
 			      <td>${product.categoryId}</td>
 			      <td class="text-center">
-			      	<a href="/api-product?action=add" class="btn btn-link">Add</a>
-			      	<a href="/api-product?action=edit&id=${product.id}" class="btn btn-link">Edit</a>
-			      	<a href="/api-product" class="btn btn-link btn-delete">Delete</a>
+			      	<a href="/product-home?action=add" class="btn btn-link">Add</a>
+			      	<a href="/product-home?action=edit&id=${product.id}" class="btn btn-link">Edit</a>
+			      	<a href="/product-home" class="btn btn-link btn-delete">Delete</a>
 			      	<input type="hidden" class="var-id" value="${product.id}">
-			      	<a class="redirect-home" href="/api-product"></a>
+			      	<a class="redirect-home" href="/product-home"></a>
 			      </td>
 			    </tr>
 		    </c:forEach>

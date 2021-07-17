@@ -1,4 +1,4 @@
-package com.laptrinhjava.controllers;
+package com.laptrinhjava.controllers.api;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +26,7 @@ import com.laptrinhjava.models.CategoryModel;
 import com.laptrinhjava.models.ProductModel;
 import com.laptrinhjava.utils.FormUtil;
 import com.laptrinhjava.utils.JsonUtil;
+import com.laptrinhjava.utils.SessionUtil;
 
 @WebServlet(urlPatterns = { "/api-product" })
 public class ProductController extends HttpServlet {
@@ -34,40 +35,15 @@ public class ProductController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String categorys = "categorys";
-	private String products = "products";
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		String action = req.getParameter("action");
-		String path = "";
-		if(action == null) {
-			req.setAttribute(products, ProductDAO.find());
-			path = "/views/display.jsp";
-		} 
-		else if(action.equals("add")) {
-			req.setAttribute(categorys, CategoryDAO.find());
-			path = "/views/insert.jsp";
-		} 
-		else if(action.equals("edit")) {
-			req.setAttribute(categorys, CategoryDAO.find());
-			req.setAttribute("product", ProductDAO.findById(req.getParameter("id")));
-			path = "/views/update.jsp";
-		}
-		
-		RequestDispatcher rd = req.getRequestDispatcher(path);
-		rd.forward(req, resp);
-	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		req.setCharacterEncoding("UTF-8");
 		ProductModel product = FormUtil.toModel(ProductModel.class, req);
 		ProductDAO.save(product);
-		resp.sendRedirect("/api-product");
+		resp.sendRedirect("/product-home");
+		
 	}
 
 	@Override
@@ -76,15 +52,16 @@ public class ProductController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		ProductModel product = JsonUtil.toModel(req.getReader(), ProductModel.class);
 		ProductDAO.updateOne(product);
-		resp.sendRedirect("/api-product");
+		resp.sendRedirect("/product-home");
 	}
-	
+
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		req.setCharacterEncoding("UTF-8");
 		ProductModel product = JsonUtil.toModel(req.getReader(), ProductModel.class);
 		ProductDAO.deleteOne(product);
+		resp.sendRedirect("/product-home");
 	}
 
 }
